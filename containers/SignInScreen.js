@@ -14,6 +14,7 @@ import { useState } from "react";
 import { ActivityIndicator } from "react-native-paper";
 import axios from "axios";
 import { Feather } from "@expo/vector-icons";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export default function SignUpScreen({ setToken, navigation, route }) {
   // Form states
@@ -47,10 +48,12 @@ export default function SignUpScreen({ setToken, navigation, route }) {
               password: password,
             }
           );
+
           setIsLoading(false);
-          alert(`Welcome back to airbnb`);
+          alert(`Welcome back to airbnb ${response.data.username}`);
           // adding token
-          const userToken = "secret-token";
+          const userToken = response.data.token;
+          await AsyncStorage.setItem("token", userToken);
           setToken(userToken);
 
           // waiting next chapter to go to next screen

@@ -10,6 +10,8 @@ import SignInScreen from "./containers/SignInScreen";
 import SignUpScreen from "./containers/SignUpScreen";
 import SettingsScreen from "./containers/SettingsScreen";
 import SplashScreen from "./containers/SplashScreen";
+import LogoTitle from "./components/LogoTitle";
+import RoomScreen from "./containers/RoomScreen";
 
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
@@ -88,8 +90,11 @@ export default function App() {
                         name="Home"
                         options={{
                           title: "My App",
-                          headerStyle: { backgroundColor: "red" },
-                          headerTitleStyle: { color: "white" },
+                          headerStyle: {
+                            backgroundColor: "white",
+                          },
+                          headerTitleAlign: "center",
+                          headerTitle: (props) => <LogoTitle {...props} />,
                         }}
                       >
                         {() => <HomeScreen />}
@@ -103,16 +108,30 @@ export default function App() {
                       >
                         {() => <ProfileScreen />}
                       </Stack.Screen>
+
+                      <Stack.Screen
+                        name="Room"
+                        options={{
+                          title: "Room Info",
+                          headerStyle: {
+                            backgroundColor: "white",
+                          },
+                          headerTitleAlign: "center",
+                          headerTitle: (props) => <LogoTitle {...props} />,
+                        }}
+                      >
+                        {() => <RoomScreen />}
+                      </Stack.Screen>
                     </Stack.Navigator>
                   )}
                 </Tab.Screen>
                 <Tab.Screen
                   name="TabSettings"
                   options={{
-                    tabBarLabel: "Settings",
+                    tabBarLabel: "My profile",
                     tabBarIcon: ({ color, size }) => (
                       <Ionicons
-                        name={"ios-options"}
+                        name={"person-outline"}
                         size={size}
                         color={color}
                       />
