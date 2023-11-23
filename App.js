@@ -9,6 +9,7 @@ import ProfileScreen from "./containers/ProfileScreen";
 import SignInScreen from "./containers/SignInScreen";
 import SignUpScreen from "./containers/SignUpScreen";
 import SettingsScreen from "./containers/SettingsScreen";
+import AroundMeScreen from "./containers/AroundMeScreen";
 import SplashScreen from "./containers/SplashScreen";
 import LogoTitle from "./components/LogoTitle";
 import RoomScreen from "./containers/RoomScreen";
@@ -125,6 +126,39 @@ export default function App() {
                     </Stack.Navigator>
                   )}
                 </Tab.Screen>
+
+                <Tab.Screen
+                  name="TabLocation"
+                  options={{
+                    tabBarLabel: "Around me",
+                    tabBarIcon: ({ color, size }) => (
+                      <Ionicons
+                        name={"map-outline"}
+                        size={size}
+                        color={color}
+                      />
+                    ),
+                  }}
+                >
+                  {() => (
+                    <Stack.Navigator>
+                      <Stack.Screen
+                        name="AroundMe"
+                        options={{
+                          title: "Around Me",
+                          headerStyle: {
+                            backgroundColor: "white",
+                          },
+                          headerTitleAlign: "center",
+                          headerTitle: (props) => <LogoTitle {...props} />,
+                        }}
+                      >
+                        {() => <AroundMeScreen />}
+                      </Stack.Screen>
+                    </Stack.Navigator>
+                  )}
+                </Tab.Screen>
+
                 <Tab.Screen
                   name="TabSettings"
                   options={{

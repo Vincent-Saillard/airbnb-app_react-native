@@ -15,11 +15,14 @@ import { FontAwesome } from "@expo/vector-icons";
 import LottieView from "lottie-react-native";
 import Swiper from "react-native-swiper";
 import { AntDesign } from "@expo/vector-icons";
+import * as Location from "expo-location";
+import MapView, { Marker, PROVIDER_GOOGLE } from "react-native-maps";
 
 export default function RoomScreen() {
   const navigation = useNavigation();
   const animation = useRef(null);
   const { params } = useRoute();
+  console.log("from Room ==> ", params.userId);
 
   // loading state
   const [isLoading, setIsLoading] = useState(true);
@@ -27,12 +30,41 @@ export default function RoomScreen() {
   const [data, setData] = useState();
   // display description state
   const [showDescription, setShowDescription] = useState(false);
+  // coordinates state for map
+  const [coordinates, setCoordinates] = useState({
+    latitude: 48.850869,
+    longitude: 2.378946,
+  });
 
   useEffect(() => {
     const fetchData = async () => {
+      // check if user is still connected
       const userToken = await AsyncStorage.getItem("userToken");
       if (userToken) {
+        // ask user authorisation to use his coordinates
+        const askPermissionAndGetCoords = async () => {
+          const { status } = await Location.requestForegroundPermissionsAsync();
+
+          if (status === "granted") {
+            // console.log("ok");
+            //get coords
+            const { coords } = await Location.getCurrentPositionAsync();
+            // console.log(coords);
+            // for testing purpose we use fixed coordinates
+            // setCoordinates({
+            //   latitude: coords.latitude,
+            //   longitude: coords.longitude,
+            // });
+          } else {
+            alert(
+              "access denied, you can still change your choice in your app's paramaters"
+            );
+          }
+        };
+        askPermissionAndGetCoords();
+
         try {
+          console.log("beforeRequest => ", params.userId);
           const response = await axios.get(
             `https://lereacteur-bootcamp-api.herokuapp.com/api/airbnb/rooms/${params.userId}`
           );
@@ -155,10 +187,33 @@ export default function RoomScreen() {
         </>
       )}
 
-      <Image
+      <MapView
+        style={styles.map}
+        // ask ios to use GoogleMaps instead of Maps
+        provider={PROVIDER_GOOGLE}
+        // setting map center
+        initialRegion={{
+          latitude: coordinates.latitude,
+          longitude: coordinates.longitude,
+          latitudeDelta: 0.2,
+          longitudeDelta: 0.2,
+        }}
+        // show location only if user accepts
+        showsUserLocation
+      >
+        <Marker
+          coordinate={{
+            latitude: data.location[1],
+            longitude: data.location[0],
+          }}
+          title={data.user.account.username}
+          description={data.description}
+        />
+      </MapView>
+      {/* <Image
         source={require("../assets/map.png")}
         style={{ width: "100%", height: 300, objectFit: "cover" }}
-      />
+      /> */}
     </ScrollView>
   );
 }
@@ -237,5 +292,9 @@ const styles = StyleSheet.create({
     alignItems: "center",
     gap: 5,
     marginBottom: 30,
+  },
+  map: {
+    width: "100%",
+    height: 300,
   },
 });
