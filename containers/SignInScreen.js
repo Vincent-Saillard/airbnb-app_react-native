@@ -48,12 +48,15 @@ export default function SignUpScreen({ setToken, navigation, route }) {
               password: password,
             }
           );
-
+          // console.log(response.data);
           setIsLoading(false);
           alert(`Welcome back to airbnb ${response.data.username}`);
           // adding token
           const userToken = response.data.token;
+          const userId = response.data.id;
+          // console.log("user info at signin => ", userId, " and ", userToken);
           await AsyncStorage.setItem("token", userToken);
+          await AsyncStorage.setItem("userId", userId);
           setToken(userToken);
 
           // waiting next chapter to go to next screen

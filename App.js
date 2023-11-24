@@ -13,6 +13,7 @@ import AroundMeScreen from "./containers/AroundMeScreen";
 import SplashScreen from "./containers/SplashScreen";
 import LogoTitle from "./components/LogoTitle";
 import RoomScreen from "./containers/RoomScreen";
+import Toast from "react-native-toast-message";
 
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
@@ -155,6 +156,7 @@ export default function App() {
                       >
                         {() => <AroundMeScreen />}
                       </Stack.Screen>
+                      {/* Ajouter un StackScreen pour une copie de Room et naviguer depuis AroundMe vers celui-ci !! */}
                     </Stack.Navigator>
                   )}
                 </Tab.Screen>
@@ -178,6 +180,11 @@ export default function App() {
                         name="Settings"
                         options={{
                           title: "Settings",
+                          headerStyle: {
+                            backgroundColor: "white",
+                          },
+                          headerTitleAlign: "center",
+                          headerTitle: (props) => <LogoTitle {...props} />,
                         }}
                       >
                         {() => <SettingsScreen setToken={setToken} />}

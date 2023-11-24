@@ -63,7 +63,10 @@ export default function SignUpScreen({ setToken, navigation, route }) {
           alert(`Welcome to airbnb ${username}`);
           // adding token
           const userToken = response.data.token;
+          const userId = response.data.id;
           await AsyncStorage.setItem("token", userToken);
+          await AsyncStorage.setItem("userId", userId);
+
           setToken(userToken);
 
           // waiting next chapter to go to next screen
