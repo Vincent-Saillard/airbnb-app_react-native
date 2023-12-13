@@ -26,7 +26,7 @@ export default function SettingsScreen({ setToken }) {
     });
   };
 
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
   // state for data request
   const [dataRecieved, setDataRecieved] = useState();
   // updating state
@@ -57,7 +57,7 @@ export default function SettingsScreen({ setToken }) {
       if (result.canceled) {
         // alert("no picture selected");
         showToast("info", "Ooops", "no picture selected");
-        showToast("error");
+        // showToast("error");
       } else {
         setPicture(result.assets[0].uri);
       }
